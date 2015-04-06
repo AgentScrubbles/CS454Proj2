@@ -7,6 +7,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
+import client.Command;
+import client.ServerCommand;
+
 public class FileManipulator {
 
 	private ConcurrentHashMap<String, FileInputStream> currentHandles;
@@ -35,6 +38,8 @@ public class FileManipulator {
 			case EOF:
 				eofCommand(scw);
 				break;
+			case NEW:
+				newCommand(scw);
 			case COMPLETE:
 			case ERROR:
 			default:
@@ -98,6 +103,19 @@ public class FileManipulator {
 		ServerCommand reply = new ServerCommand(Command.COMPLETE, null,
 				sent.fileName, sent.handle, "");
 		scw.setReturnCmd(reply);
+	}
+	
+	private synchronized void newCommand(ServerCommandWrapper scw){
+		ServerCommand sent = scw.getSendCommand();
+		File newFile = new File(sent.fileName);
+		try {
+			newFile.createNewFile();
+			ServerCommand complete = new ServerCommand(Command.COMPLETE, null, sent.fileName, sent.handle, "");
+			scw.setReturnCmd(complete);
+		} catch (IOException e) {
+			errorCommand(scw, e);
+		}
+		
 	}
 
 	private synchronized void eofCommand(ServerCommandWrapper scw)

@@ -1,6 +1,8 @@
-package server;
+package client;
 
 import java.io.Serializable;
+
+import server.FileHandle;
 
 public class ServerCommand implements Serializable{
 

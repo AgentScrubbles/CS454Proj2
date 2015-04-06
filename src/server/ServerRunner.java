@@ -3,8 +3,10 @@ package server;
 public class ServerRunner {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		
+		FileManipulator manip = new FileManipulator();
+		SocketServerComponent server = new SocketServerComponent(48182, manip);
+		server.start();
 	}
 
 }

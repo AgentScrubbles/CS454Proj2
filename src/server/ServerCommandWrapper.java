@@ -2,6 +2,8 @@ package server;
 
 import java.net.Socket;
 
+import client.ServerCommand;
+
 public class ServerCommandWrapper {
 	
 	private final Socket _socket;

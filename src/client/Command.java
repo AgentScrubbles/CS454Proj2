@@ -1,9 +1,10 @@
-package server;
+package client;
 
 import java.io.Serializable;
 
 public enum Command implements Serializable {
 	OPEN,
+	NEW,
 	CLOSE,
 	READ,
 	WRITE,

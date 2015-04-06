@@ -2,18 +2,34 @@ package server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import client.ServerCommand;
 
 
 public class SocketServerComponent {
 	
 	private final int _port;
 	private final AtomicBoolean _stop;
-	public SocketServerComponent(int port){
+	private final FileManipulator fileManip;
+	public SocketServerComponent(int port, FileManipulator fileManip){
 		_port = port;
+		this.fileManip = fileManip;
 		_stop = new AtomicBoolean(false);
+	}
+	
+	public void start(){
+		new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				startConnection();
+			}
+			
+		}).start();
 	}
 	
 	private void startConnection() {
@@ -59,18 +75,17 @@ public class SocketServerComponent {
 	 * @throws IOException
 	 */
 	private void acceptRequest(Socket s) throws IOException {
+		ObjectInputStream inputStream = null;
+		ObjectOutputStream outputStream = null;
 		try {
-			// We expect line-oriented text input, so wrap the input stream
-			// in a Scanner
-
-			// while (scanner.hasNextLine()) {
-
-			ObjectInputStream stream = (ObjectInputStream) s.getInputStream();
+			inputStream = new ObjectInputStream(s.getInputStream());
+			outputStream = new ObjectOutputStream(s.getOutputStream());
 			try {
-				ServerCommand cmd = (ServerCommand) stream.readObject();
-				
-				
-				
+				ServerCommand cmd = (ServerCommand) inputStream.readObject();
+				ServerCommandWrapper wrapper = new ServerCommandWrapper(cmd, s);
+				fileManip.handle(wrapper);
+				outputStream.writeObject(wrapper.getReturnCommand());
+				outputStream.close();
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -79,6 +94,12 @@ public class SocketServerComponent {
 
 		} finally {
 			// close the connection in a finally block
+			if(inputStream != null){
+				inputStream.close();
+			}
+			if(outputStream != null){
+				outputStream.close();
+			}
 			s.close();
 
 		}
