@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.Future;
 
+import command.ServerCommand;
+
 public class SocketConnection {
 	private final String _host;
 	private final int _port;

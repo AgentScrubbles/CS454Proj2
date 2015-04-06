@@ -2,7 +2,9 @@ package client;
 
 import java.io.IOException;
 
-import server.FileHandle;
+import command.CommandFactory;
+import command.FileHandle;
+import command.ServerCommand;
 
 public class ClientTest {
 
@@ -12,7 +14,7 @@ public class ClientTest {
 		String fileName = "testTextFile";
 		byte[] data = new byte[4];
 		
-		ServerCommand sc = new ServerCommand(Command.OPEN, data, fileName, handle, null);
+		ServerCommand sc = CommandFactory.newFileCommand("MyTestFile.txt");
 		
 		SocketConnection socket = new SocketConnection("localhost", 48182);
 		ServerCommand finished = socket.request(sc);

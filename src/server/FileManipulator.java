@@ -7,8 +7,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
-import client.Command;
-import client.ServerCommand;
+import command.Command;
+import command.FileHandle;
+import command.ServerCommand;
 
 public class FileManipulator {
 

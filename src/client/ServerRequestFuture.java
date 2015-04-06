@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import command.ServerCommand;
+
 public class ServerRequestFuture implements Future<ServerCommand>{
 
 	private ServerCommand completedObject;

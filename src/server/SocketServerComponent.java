@@ -7,7 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import client.ServerCommand;
+import command.ServerCommand;
 
 
 public class SocketServerComponent {

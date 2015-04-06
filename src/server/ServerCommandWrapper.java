@@ -2,7 +2,7 @@ package server;
 
 import java.net.Socket;
 
-import client.ServerCommand;
+import command.ServerCommand;
 
 public class ServerCommandWrapper {
 	
