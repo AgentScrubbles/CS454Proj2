@@ -10,15 +10,21 @@ public class ClientTest {
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 		
-		FileHandle handle = new FileHandle();
-		String fileName = "testTextFile";
-		byte[] data = new byte[4];
+		ConnectionAPI conn = new ConnectionAPI("localhost", 48182);
 		
-		ServerCommand sc = CommandFactory.newFileCommand("MyTestFile.txt");
+		conn.newFile("testFile.txt");
+		conn.openFile("testFile.txt");
 		
-		SocketConnection socket = new SocketConnection("localhost", 48182);
-		ServerCommand finished = socket.request(sc);
-		System.out.println(finished.command + ", " + finished.str);
+		String testString = "Hello, World!";
+		byte[] data = testString.getBytes("UTF-8");
+		
+		conn.writeFile("testFile.txt", data);
+		
+		byte[] readData = conn.readFile("testFile.txt", data.length);
+		
+		System.out.println(new String(readData, "UTF-8"));
+		
+		conn.closeFile("testFile.txt");
 	}
 
 }

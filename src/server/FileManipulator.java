@@ -41,6 +41,7 @@ public class FileManipulator {
 				break;
 			case NEW:
 				newCommand(scw);
+				break;
 			case COMPLETE:
 			case ERROR:
 			default:
