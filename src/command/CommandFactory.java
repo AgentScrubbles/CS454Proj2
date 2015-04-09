@@ -1,6 +1,16 @@
 package command;
 
-
+/**
+ * Factory class to make the special serializable 'ServerCommand' types.  Since each one has it's own properties
+ * and options, it ended up being much easier to instantiate it within this factory for each type.  This
+ * makes the Server and Client API's much more similar.
+ * 
+ * For example, the 'complete' message does not need a file handle or file name, the fact that it is 'complete'
+ * is enough for the client to know.  Where the write message must provide the handle, the filename, and the
+ * data to write.  This will enforce these rules.
+ * @author Robert
+ *
+ */
 public class CommandFactory {
 	public static ServerCommand newFileCommand(String fileName){
 		return new ServerCommand(Command.NEW, null, fileName, new FileHandle(), "");
