@@ -75,6 +75,7 @@ public class SocketServerComponent {
 	 * @throws IOException
 	 */
 	private void acceptRequest(Socket s) throws IOException {
+		System.out.println("Request received from " + s.getInetAddress().toString());
 		ObjectInputStream inputStream = null;
 		ObjectOutputStream outputStream = null;
 		try {
