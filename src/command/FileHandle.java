@@ -21,6 +21,10 @@ public class FileHandle implements Serializable
     {
 	index=cnt++;
     }
+    
+    public FileHandle(int start){
+    	index = start;
+    }
 
     public boolean isAlive()
     {
@@ -37,5 +41,9 @@ public class FileHandle implements Serializable
     public void discard()
     {
 	index=0;
+    }
+    
+    public int index(){
+    	return index;
     }
 }

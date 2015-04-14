@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
 import command.Command;
+import command.CommandFactory;
 import command.FileHandle;
 import command.ServerCommand;
 
@@ -26,10 +27,12 @@ public class FileManipulator {
 			case OPEN:
 				openCommand(scw);
 				break;
+			case SIZE:
+				sizeCommand(scw);
+				break;
 			case READ:
 				readCommand(scw);
 				break;
-
 			case WRITE:
 				writeCommand(scw);
 				break;
@@ -64,7 +67,25 @@ public class FileManipulator {
 				fileName, fh, "");
 		scw.setReturnCmd(returnCommand);
 	}
+	
+	/**
+	 * Gets the size of a file in bytes
+	 * @param scw
+	 */
+	private synchronized void sizeCommand(ServerCommandWrapper scw){
+		ServerCommand in = scw.getSendCommand();
+		File f = new File(in.fileName);
+		ServerCommand out = CommandFactory.completeFileCommand(in.fileName, Long.toString(f.length()));
+		scw.setReturnCmd(out);
+	}
 
+	/**
+	 * Reads in an amount of bytes from the currently open file.  This will allow any process from reading
+	 * into the file.  
+	 * @param scw
+	 * @return
+	 * @throws IOException
+	 */
 	private synchronized int readCommand(ServerCommandWrapper scw)
 			throws IOException {
 		String fileName = scw.getSendCommand().fileName;
@@ -75,7 +96,10 @@ public class FileManipulator {
 		}
 		ServerCommand returnCommand = new ServerCommand(Command.COMPLETE,
 				sentCommand.data, fileName, sentCommand.handle, "");
-		int res = in.read(returnCommand.data);
+		//int res = in.read(returnCommand.data);
+		//Changing so that the fileHandle now specifies the location of the read.
+		int res = in.read(returnCommand.data, sentCommand.handle.index(), returnCommand.data.length);
+	
 		scw.setReturnCmd(returnCommand);
 		return res;
 	}

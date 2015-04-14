@@ -160,6 +160,56 @@ public class ConnectionAPI {
 
 		}).start();
 	}
+	
+	/**
+	 * Test I did, see if I could make this read an entire file by running chunks.
+	 * 
+	 * I have not tested with files whose size overflows a standard int
+	 * @param fileName
+	 * @return
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
+	 */
+	public byte[] readEntireFile(String fileName) throws ClassNotFoundException, IOException{
+		openFile(fileName); //Open the file
+		long size = sizeOfFile(fileName);
+		byte[] file = new byte[(int) size]; //entire file of data
+		int blockSize = 20; //Can be any integer, 20 sounded good to me
+		int i = 0;
+		for(i = 0; i < size; i += blockSize){ //Go through entire size
+			byte[] data = readFile(fileName, i, blockSize); //Data read by this block
+			int count = 0;
+			for(int j = i; j < blockSize; j++){ //Copy local block to file
+				file[j] = data[count++];
+			}
+		}
+		if(i < size){ //Copy remaining data to file
+			blockSize = (int) (size - i);
+			byte[] data = readFile(fileName, i, blockSize); //Read last off block
+			int count = 0;
+			for(int j = i; j < blockSize; j++){ //Copy into final sections of file
+				file[j] = data[count++];
+			}
+		}
+		closeFile(fileName);
+		return file;
+	}
+	
+	/**
+	 * Gets the size of the file, file may be open or closed.
+	 * @param fileName
+	 * @return
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
+	 */
+	public long sizeOfFile(String fileName) throws ClassNotFoundException, IOException{
+		ServerCommand cmd = CommandFactory.sizeFileCommand(fileName);
+		ServerCommand complete = connection.request(cmd);
+		if(complete.command == Command.COMPLETE){
+			return Long.parseLong(complete.str);
+		}
+		return -1;
+	}
 
 	/**
 	 * Read from the filename
@@ -174,6 +224,10 @@ public class ConnectionAPI {
 	 */
 	public byte[] readFile(String fileName, int amount) throws IOException,
 			ClassNotFoundException {
+		return readFile(fileName, amount, 0);
+	}
+	
+	public byte[] readFile(String fileName, int amount, int offset) throws ClassNotFoundException, IOException{
 		if (!openFiles.containsKey(fileName)) {
 			throw new IOException("File not opened!");
 		}

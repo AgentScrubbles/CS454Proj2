@@ -12,6 +12,10 @@ package command;
  *
  */
 public class CommandFactory {
+	public static ServerCommand sizeFileCommand(String fileName){
+		return new ServerCommand(Command.SIZE, null, fileName, new FileHandle(), "");
+	}
+	
 	public static ServerCommand newFileCommand(String fileName){
 		return new ServerCommand(Command.NEW, null, fileName, new FileHandle(), "");
 	}
