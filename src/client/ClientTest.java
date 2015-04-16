@@ -12,7 +12,21 @@ public class ClientTest {
 		
 		ConnectionAPI conn = new ConnectionAPI("localhost", 48182);
 		
-		conn.readEntireFile("testFile.txt");
+		//Not working yet
+		//conn.readEntireFile("testFile.txt");
+		
+		//Open the file...
+		if(!conn.openFile("testFile.txt")){
+			System.out.println("File not able to open.  Has it been created?");
+			conn.newFile("testFile.txt");
+			conn.openFile("testFile.txt");
+		}
+		long size = conn.sizeOfFile("testFile.txt");
+		System.out.println("Size of testFile.txt is " + size);
+		byte[] data = conn.readFile("testFile.txt", (int) size);
+
+		System.out.println(new String(data, "UTF-8"));
+		conn.closeFile("testFile.txt");
 	}
 
 }
