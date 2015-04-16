@@ -17,6 +17,12 @@ import command.ServerCommand;
  */
 public class ConnectionAPI {
 	private final SocketConnection connection;
+	
+	/**
+	 * this is the cache mechanism for all open files.  When a file is opened, it will be placed here.
+	 * This also helps keep track of if a file is open or closed.  This will mean less error commands sent
+	 * to the server by checking locally.
+	 */
 	private ConcurrentHashMap<String, FileHandle> openFiles;
 
 	/**

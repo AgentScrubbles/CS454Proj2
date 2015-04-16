@@ -42,8 +42,14 @@ public class SocketConnection {
 		return output;
 	}
 	
+	
+	/**
+	 * Non functional, does not work without async working
+	 * @param input
+	 * @return
+	 */
 	public Future<ServerCommand> requestAsync(final ServerCommand input){
-		final ServerRequestFuture f = new ServerRequestFuture();
+		//final ServerRequestFuture f = new ServerRequestFuture();
 		Runnable r = new Runnable(){
 
 			@Override
