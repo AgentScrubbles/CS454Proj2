@@ -49,7 +49,7 @@ public class SocketConnection {
 	 * @return
 	 */
 	public Future<ServerCommand> requestAsync(final ServerCommand input){
-		//final ServerRequestFuture f = new ServerRequestFuture();
+		final ServerRequestFuture f = new ServerRequestFuture();
 		Runnable r = new Runnable(){
 
 			@Override

@@ -2,6 +2,13 @@ package command;
 
 import java.io.Serializable;
 
+/**
+ * This class wraps the Command enum with any required data that may be needed.  Both parties
+ * know which data is needed and what can be ignored.  This is immutable, so it is safe to pass
+ * knowing that data will not be corrupted.
+ * @author Robert
+ *
+ */
 public class ServerCommand implements Serializable{
 
 	/**

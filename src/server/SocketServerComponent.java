@@ -9,7 +9,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import command.ServerCommand;
 
-
+/**
+ * The component used to listen for incoming connections.  This will call the file manipulator
+ * @author Robert
+ *
+ */
 public class SocketServerComponent {
 	
 	private final int _port;
@@ -21,6 +25,10 @@ public class SocketServerComponent {
 		_stop = new AtomicBoolean(false);
 	}
 	
+	
+	/**
+	 * After creation, this will start the listener
+	 */
 	public void start(){
 		new Thread(new Runnable(){
 

@@ -4,6 +4,12 @@ import java.net.Socket;
 
 import command.ServerCommand;
 
+/**
+ * This object wraps an incoming ServerCommand and outgoing ServerCommand.  It also contains a unique
+ * ID and the socket associated with it.
+ * @author Robert
+ *
+ */
 public class ServerCommandWrapper {
 	
 	private final Socket _socket;
