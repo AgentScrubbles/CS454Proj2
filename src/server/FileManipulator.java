@@ -98,7 +98,7 @@ public class FileManipulator {
 				sentCommand.data, fileName, sentCommand.handle, "");
 		//int res = in.read(returnCommand.data);
 		//Changing so that the fileHandle now specifies the location of the read.
-		int res = in.read(returnCommand.data, sentCommand.handle.index(), returnCommand.data.length);
+		int res = in.read(returnCommand.data, 0, returnCommand.data.length);
 	
 		scw.setReturnCmd(returnCommand);
 		return res;
